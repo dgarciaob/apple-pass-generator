@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @unique
+  firstName String?
+  lastName  String?
+  email    String @unique
+
+  stampCards StampCard[]
+}
+
+// Stamp Card NO tiene Primary Field. 
+model StampCard {
+  id            String   @id @default(uuid()) // POR EL MOMENTO SE DARÁN STAMPS BASADAS EN LAS VISITAS/COMPRAS DEL CLIENTE. A FUTURO PODRÍA SER POR EL MONTO DE GASTO TAMBIÉN
+  title         String   // Título de la tarjeta. (LogoText)
+  description   String   // Descripción de la tarjeta
+  backgroundColor String  // Color de fondo en formato HEX
+  foregroundColor String  // Color del texto en formato HEX
+  labelColor    String   // Color de las etiquetas en formato HEX
+  barcodeFormat String  // Formato del código de barras
+  barcodeMessage String?  // Mensaje del código de barras (opcional)
+
+  goal          Int      // Meta para completar la tarjeta (Secondary Label 1)
+  currentStamps Int      @default(0) // Progreso actual (Secondary Label 2)
+  reward        String   // Recompensa al cumplir la meta (Auxiliary Label 1)
+
+  expirationType String // Tipo de expiración: Unlimited, Fixed o Fixed after card issuing
+  expirationDate DateTime?      // Fecha de expiración (si aplica)
+  issueDate      DateTime?      // Fecha de emisión de la tarjeta. Se actualiza cuando el usuario canjea su tarjeta
+
+  activeStampType String   // Puede ser un ícono o imagen. Es lo que verá el usuario cuando tenga un stamp completado
+  activeStampIcon String? // Ícono del sello activo
+  activeStampImage String? // Imagen del sello activo
+
+  inactiveStampType String   // Puede ser un ícono o imagen. Es lo que verá el usuario cuando tenga un stamp pendiente
+  inactiveStampIcon String? // Ícono del sello pendiente
+  inactiveStampImage String? // Imagen del sello pendiente
+
+  logo String? // Logo de la tarjeta
+  icon String? // Ícono de la tarjeta (para push notifications)
+  thumbnail String? // Background detrás de stamps. Es horizontal
+
+  stampBackgroundColor String? // Color de fondo de los stamps (Sólo aparece si el activeStampType o inactiveStampType es "icon")
+  stampOutlineColor String? // Color del borde de los stamps (Sólo aparece si el activeStampType o inactiveStampType es "icon")
+  activeStampFillColor String? // Color de relleno del sello activo (Sólo aparece si el activeStampType es "icon") - Recomendación que sea #000000
+  inactiveStampFillColor String? // Color de relleno del sello inactivo (Sólo aparece si el inactiveStampType es "icon") - Recomendación que sea #AAAAAA
+
+  isActive      Boolean  @default(false) // Indica si la tarjeta está activa o no
+  isIssued      Boolean  @default(false) // Indica si la tarjeta ha sido emitida o no
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  userId         String
+  user           User           @relation(fields: [userId], references: [id])
+}
+
