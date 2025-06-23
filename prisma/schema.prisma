@@ -20,6 +20,7 @@ model User {
   email    String @unique
 
   stampCards StampCard[]
+  businessCards BusinessCard[]
 }
 
 // Stamp Card NO tiene Primary Field. 
@@ -66,5 +67,55 @@ model StampCard {
 
   userId         String
   user           User           @relation(fields: [userId], references: [id])
+}
+
+
+model BusinessCard {
+  id               String   @id @default(uuid())
+  
+  // Información personal
+  firstName        String
+  lastName         String
+  jobTitle         String?
+  companyName      String?
+  email            String
+  phone            String?
+  website          String?
+  
+  // Redes sociales
+  linkedin         String?
+  twitter          String?
+  instagram        String?
+  facebook         String?
+  
+  // Dirección
+  address          String?
+  city             String?
+  state            String?
+  zipCode          String?
+  country          String?
+  
+  // Personalización del pase
+  backgroundColor  String   // Color de fondo en formato HEX
+  foregroundColor  String   // Color del texto en formato HEX
+  labelColor       String   // Color de las etiquetas en formato HEX
+  
+  // Logotipos e imágenes
+  logo             String?  // URL/Path del logo de la empresa
+  profileImage     String?  // URL/Path de la imagen de perfil
+  icon             String?  // Ícono para notificaciones
+  
+  // Código QR/Barcode
+  barcodeFormat    String   // Formato del código (QR, PDF417, etc.)
+  barcodeMessage   String?  // Mensaje del código (vCard, URL, etc.)
+  
+  // Metadatos
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  // Relación con el usuario
+  userId           String
+  user             User     @relation(fields: [userId], references: [id])
 }
 

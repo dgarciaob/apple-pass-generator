@@ -8,7 +8,8 @@ const DashboardPage = () => {
     <div>
       <AdminPageHeader />
       <section className="mt-4">
-        <CouponForm />
+        {/* <CouponForm /> */}
+        Work in Progress
       </section>
     </div>
   );

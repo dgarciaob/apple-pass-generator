@@ -1,4 +1,4 @@
-import { BarChart, WalletCards } from "lucide-react";
+import { BarChart, IdCard, WalletCards } from "lucide-react";
 
 export const items = [
   {
@@ -6,9 +6,14 @@ export const items = [
     url: "/dashboard",
     icon: BarChart,
   },
+  // {
+  //   title: "Cupones",
+  //   url: "/cupones",
+  //   icon: WalletCards,
+  // },
   {
-    title: "Cupones",
-    url: "/cupones",
-    icon: WalletCards,
+    title: "Business Card",
+    url: "/business-card",
+    icon: IdCard,
   },
 ];
